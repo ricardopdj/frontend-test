@@ -31,3 +31,31 @@
     transform: rotate(360deg);
   }
 }
+
+.card {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0 25px 25px 0;
+  text-align: left;
+}
+
+.events-feat {
+  list-style: none;
+  padding: 0;
+}
+
+.events-feat .card {
+  border: none;
+}
+
+.events-feat .card-body {
+  padding: 0 15px;
+}
+
+.events-feat .card-title {
+  font-size: 14px;
+}
+
+.events-feat .card-text {
+  font-size: 12px;
+}
+
