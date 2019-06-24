@@ -1,43 +1,27 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import EventAPI from './services/EventAPI'
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import EventList from './pages/EventList.js'
+import Event from './components/Event.js'
 
 class App extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      events: [],
-      eventsFeat: []
-    }
   }
-
-  componentDidMount() {
-    this.getEvents()
-    this.getEventsFeat()
-  }
-
-  getEvents = async () => {
-    const response = await EventAPI.get()
-    this.setState({events: response.events})
-  }
-
-  getEventsFeat = async () => {
-    const response = await EventAPI.getFeat()
-    this.setState({eventsFeat: response.events})
-  }
-
 
   render() {
-    const { events, eventsFeat } = this.state
     return (
-      <div className="App">
-        <nav className="navbar navbar-light bg-light px-4">
-          <a className="navbar-brand" href="#">Events</a>
-        </nav>
-        <EventList events={events} eventsFeat={eventsFeat} />
-      </div>
+      <Router>
+        <div className="App">
+          <Route
+            exact
+            path="/"
+            component={EventList}
+          />
+          <Route path="/:id" component={Event} />
+        </div>
+      </Router>
     )
   }
 }

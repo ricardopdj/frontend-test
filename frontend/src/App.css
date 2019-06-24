@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
@@ -57,5 +57,9 @@
 
 .events-feat .card-text {
   font-size: 12px;
+}
+
+.event-location {
+  font-size: 14px;
 }
 
