@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 import EventAPI from '../services/EventAPI'
 import EventCard from '../components/EventCard.js'
 import EventFeatCard from '../components/EventFeatCard.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 
 class EventList extends Component {
   constructor (props) {
@@ -49,13 +50,11 @@ class EventList extends Component {
               <ul className="events-feat">
                 { eventsFeat.length && eventsFeat.map((event, key) => <EventFeatCard key={key} event={event}/> )}
               </ul>
-              <Link to="/" className="btn btn-primary float-right">
-                <button className="btn btn-primary float-right">
-                    <FontAwesomeIcon icon={faPlus}/>
-                </button>
-              </Link>
             </div>
           </div>
+          <Link to="/event/new" className="btn btn-primary float-right m-3" title="Add Event">
+            <FontAwesomeIcon icon={faPlus}/>
+          </Link>
         </div>
       </div>
     )

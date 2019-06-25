@@ -24,13 +24,17 @@ function show(id) {
   });
 }
 
-// function create() {
-//   return post(`${baseURL}`)
-//   .then(res => res.json())
-//   .catch(err => {
-//     throw err
-//   });
-// }
+function create(data) {
+  return fetch(`${baseURL}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data),
+  })
+  .then(res => res.json())
+  .catch(err => {
+    throw err
+  });
+}
 
-const EventAPI = { get, getFeat, show };
+const EventAPI = { get, getFeat, show, create };
 export default EventAPI;

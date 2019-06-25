@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import EventList from './pages/EventList.js'
 import Event from './components/Event.js'
+
 
 class App extends Component {
   constructor (props) {
@@ -13,14 +14,11 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <Route
-            exact
-            path="/"
-            component={EventList}
-          />
-          <Route path="/:id" component={Event} />
-        </div>
+        <Switch>
+          <Route exact path="/" component={EventList} />
+          <Route exact path="/event/new" render={props => <Event {...props} isNewEvent={true} />}/>
+          <Route exact path="/event/:id" component={Event} />
+        </Switch>
       </Router>
     )
   }

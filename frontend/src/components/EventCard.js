@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 function EventCard(props) {
   const { event } = props
@@ -13,7 +14,7 @@ function EventCard(props) {
           <h5 className="card-title mb-0">{event.title}</h5>
         </div>
         <div className="card-footer">
-          <a href={event.id} className="btn btn-primary">View</a>
+          <Link to={`/event/${event.id}`} className="btn btn-primary">View</Link>
         </div>
       </div>
     </div>
