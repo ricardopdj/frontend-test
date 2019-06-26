@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import EventAPI from '../services/EventAPI'
+import { Link } from 'react-router-dom'
 import EventCard from '../components/EventCard.js'
 import EventFeatCard from '../components/EventFeatCard.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-
 
 class EventList extends Component {
   constructor (props) {
@@ -22,13 +21,21 @@ class EventList extends Component {
   }
 
   getEvents = async () => {
-    const response = await EventAPI.get()
-    this.setState({events: response.events})
+    const response = await EventAPI.get('/')
+    if (response.ok) {
+      this.setState({events: response.data.events})
+    } else {
+      console.log(response.problem)
+    }
   }
 
   getEventsFeat = async () => {
-    const response = await EventAPI.getFeat()
-    this.setState({eventsFeat: response.events})
+    const response = await EventAPI.get('/featured')
+    if (response.ok) {
+      this.setState({eventsFeat: response.data.events})
+    } else {
+      console.log(response.problem)
+    }
   }
 
   render () {
@@ -40,8 +47,8 @@ class EventList extends Component {
         </nav>
         <div className="container-fluid px-4 py-4">
           <div className="row">
-            <div className="col-12 col-lg-8 events d-flex flex-wrap">
-              <div className="row">
+            <div className="col-12 col-lg-8">
+              <div className="row events d-flex flex-wrap">
                 { events.length && events.map((event, key) => <EventCard key={key} event={event}/> )}
               </div>
             </div>

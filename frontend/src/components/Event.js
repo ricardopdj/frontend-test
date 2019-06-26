@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import EventAPI from '../services/EventAPI'
+import { Link } from "react-router-dom";
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowCircleLeft, faSave } from '@fortawesome/free-solid-svg-icons'
+import { withRouter } from "react-router-dom";
 
 class Event extends Component {
   constructor (props) {
@@ -23,14 +24,29 @@ class Event extends Component {
   }
 
   getEvent = async () => {
-    const response = await EventAPI.show(this.props.match.params.id)
-    this.setState({event: response.event, isLoading: false})
+    const response = await EventAPI.get(`/${this.props.match.params.id}`)
+    if (response.ok) {
+      this.setState({event: response.data.event, isLoading: false})
+    } else {
+      console.log(response.problem)
+    }
   }
 
-  createEvent = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const response = await EventAPI.create({event: formData})
+  createEvent = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const event = {
+      'title': formData.get('title'),
+      'description': formData.get('description'),
+      'eventImage': formData.get('eventImage'),
+      'location': formData.get('location')
+    }
+    const response = await EventAPI.post('/', {event:event})
+    if (response.ok) {
+      this.props.history.push('/');
+    } else {
+      console.log(response.problem)
+    }
   }
 
   render () {
@@ -56,10 +72,12 @@ class Event extends Component {
             <div className="container-fluid px-4 py-4">
               <div className="row">
                 <div className="col-12 col-lg-8">
-                  <input type="text" name="title" className="form-control" placeholder="Event Name"/>
-                  <textarea name="description" className="form-control" rows="10" />
+                  <input type="text" name="title" className="form-control mb-3" placeholder="Event Name"/>
+                  <textarea name="description" className="form-control" rows="10" placeholder="Event Description"/>
                 </div>
                 <div className="col-12 col-lg-4 px-2">
+                  <input type="text" name="eventImage" className="form-control mb-3" placeholder="Image URL"/>
+                  <input type="text" name="location" className="form-control mb-3" placeholder="Location"/>
                   <table className="table mt-3">
                     <thead className="thead-dark">
                       <tr>
@@ -68,6 +86,12 @@ class Event extends Component {
                         <th scope="col">Price</th>
                       </tr>
                     </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>
