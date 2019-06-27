@@ -11,7 +11,8 @@ class Event extends Component {
     super(props)
     this.state = {
       event: null,
-      isLoading: true
+      isLoading: true,
+      error: null
     }
   }
 
@@ -24,35 +25,40 @@ class Event extends Component {
   }
 
   getEvent = async () => {
-    const response = await EventAPI.get(`/${this.props.match.params.id}`)
-    if (response.ok) {
+    try {
+      const response = await EventAPI.get(`/${this.props.match.params.id}`)
       this.setState({event: response.data.event, isLoading: false})
-    } else {
-      console.log(response.problem)
+    } catch (response) {
+      this.setState({error: response.originalError.message})
     }
   }
 
   createEvent = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const event = {
-      'title': formData.get('title'),
-      'description': formData.get('description'),
-      'eventImage': formData.get('eventImage'),
-      'location': formData.get('location')
-    }
-    const response = await EventAPI.post('/', {event:event})
-    if (response.ok) {
+    try {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const event = {
+        'title': formData.get('title'),
+        'description': formData.get('description'),
+        'eventImage': formData.get('eventImage'),
+        'location': formData.get('location'),
+        'dates': [formData.get('dates')]
+      }
+      await EventAPI.post('/', {event:event})
       this.props.history.push('/');
-    } else {
-      console.log(response.problem)
+    } catch (response) {
+      this.setState({error: response.originalError.message})
     }
   }
 
   render () {
-    const { event, isLoading } = this.state
+    const { event, isLoading, error } = this.state
     if (isLoading) {
       return <div>Loading</div>
+    }
+
+    if (error) {
+      return <div className='text-center'>{error}</div>
     }
 
     const navbar = (
@@ -78,21 +84,7 @@ class Event extends Component {
                 <div className="col-12 col-lg-4 px-2">
                   <input type="text" name="eventImage" className="form-control mb-3" placeholder="Image URL"/>
                   <input type="text" name="location" className="form-control mb-3" placeholder="Location"/>
-                  <table className="table mt-3">
-                    <thead className="thead-dark">
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <input type="text" name="dates" className="form-control mb-3" placeholder="Date"/>
                 </div>
               </div>
               <button

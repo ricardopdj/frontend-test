@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import EventAPI from '../services/EventAPI'
 import { Link } from 'react-router-dom'
-import EventCard from '../components/EventCard.js'
-import EventFeatCard from '../components/EventFeatCard.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import EventCard from '../components/EventCard.js'
+import EventFeatCard from '../components/EventFeatCard.js'
 
 class EventList extends Component {
   constructor (props) {
     super(props)
     this.state = {
       events: [],
-      eventsFeat: []
+      eventsFeat: [],
+      error: null
     }
   }
 
@@ -21,25 +22,30 @@ class EventList extends Component {
   }
 
   getEvents = async () => {
-    const response = await EventAPI.get('/')
-    if (response.ok) {
+    try {
+      const response = await EventAPI.get('/')
       this.setState({events: response.data.events})
-    } else {
-      console.log(response.problem)
+    } catch (response) {
+      this.setState({error: response.originalError.message})
     }
   }
 
   getEventsFeat = async () => {
-    const response = await EventAPI.get('/featured')
-    if (response.ok) {
+    try {
+      const response = await EventAPI.get('/featured')
       this.setState({eventsFeat: response.data.events})
-    } else {
-      console.log(response.problem)
+    } catch (response) {
+      this.setState({error: response.originalError.message})
     }
   }
 
   render () {
-    const { events, eventsFeat } = this.state
+    const { events, eventsFeat, error } = this.state
+
+    if (error) {
+      return <div className='text-center'>{error}</div>
+    }
+
     return (
       <div>
         <nav className="navbar navbar-light bg-light px-4">
@@ -49,13 +55,13 @@ class EventList extends Component {
           <div className="row">
             <div className="col-12 col-lg-8">
               <div className="row events d-flex flex-wrap">
-                { events.length && events.map((event, key) => <EventCard key={key} event={event}/> )}
+                { events.length > 0 && events.map((event, key) => <EventCard key={key} event={event}/> )}
               </div>
             </div>
             <div className="col-12 col-lg-4 px-2 events-feat">
               <h4 className="text-left border-bottom mb-4 pb-2">Today's Highlight</h4>
               <ul className="events-feat">
-                { eventsFeat.length && eventsFeat.map((event, key) => <EventFeatCard key={key} event={event}/> )}
+                { eventsFeat.length > 0 && eventsFeat.map((event, key) => <EventFeatCard key={key} event={event}/> )}
               </ul>
             </div>
           </div>
