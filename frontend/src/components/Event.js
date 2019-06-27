@@ -63,10 +63,12 @@ class Event extends Component {
 
     const navbar = (
       <nav className="navbar navbar-light bg-light px-4">
-        <Link to="/" className="navbar-brand">
-          <FontAwesomeIcon icon={faArrowCircleLeft}/>
-          <span className="mx-2">Events</span>
-        </Link>
+        <div className="container">
+          <Link to="/" className="navbar-brand">
+            <FontAwesomeIcon icon={faArrowCircleLeft}/>
+            <span className="mx-2">Events</span>
+          </Link>
+        </div>
       </nav>
     )
 
@@ -75,13 +77,13 @@ class Event extends Component {
         <div>
           { navbar }
           <form onSubmit={this.createEvent}>
-            <div className="container-fluid px-4 py-4">
+            <div className="container px-4 py-4">
               <div className="row">
                 <div className="col-12 col-lg-8">
                   <input type="text" name="title" className="form-control mb-3" placeholder="Event Name"/>
                   <textarea name="description" className="form-control" rows="10" placeholder="Event Description"/>
                 </div>
-                <div className="col-12 col-lg-4 px-2">
+                <div className="col-12 col-lg-4 pt-3 pt-md-0">
                   <input type="text" name="eventImage" className="form-control mb-3" placeholder="Image URL"/>
                   <input type="text" name="location" className="form-control mb-3" placeholder="Location"/>
                   <input type="text" name="dates" className="form-control mb-3" placeholder="Date"/>
@@ -100,7 +102,7 @@ class Event extends Component {
       return (
         <div>
           { navbar }
-          <div className="container-fluid px-4 py-4">
+          <div className="container px-4 py-4">
             <div className="row">
               <div className="col-12 col-lg-8">
                 <h3>{event.title}</h3>

@@ -49,9 +49,11 @@ class EventList extends Component {
     return (
       <div>
         <nav className="navbar navbar-light bg-light px-4">
-          <Link to="/" className="navbar-brand">Events</Link>
+          <div className="container">
+            <Link to="/" className="navbar-brand">Events</Link>
+          </div>
         </nav>
-        <div className="container-fluid px-4 py-4">
+        <div className="container px-4 py-4">
           <div className="row">
             <div className="col-12 col-lg-8">
               <div className="row events d-flex flex-wrap">
